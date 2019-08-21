@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  outline: none;
+}
+
+body {
+  color: #333333;
+  font-family: arial;
+}
+
+.main-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.image {
+  width: 500px;
+}
+
+.search-form {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.search-input {
+    text-indent: 3%;
+    font-size: 26px;
+    color: white;
+    width: 80%;
+    height: 50px;
+    border: none;
+    background-color: rgb(167, 167, 167);
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all .2s;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.search-input:focus, .search-input:hover{
+    background-color: rgb(190, 190, 190);
+}
+
+.search-button {
+    position: absolute;
+    left: 85vw;
+    top: 16%;
+}
+
+.search-button:focus, .search-button:active {
+    outline: none;
+}
+
+/* Weather Page */
+.current-weather {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.text-container {
+    margin-left: 20px;
+}
+
+.text-container > h2 {
+    margin-bottom: 5px;
+}
+
+.text-container > p {
+    font-size: 18px;
+    font-weight: 100;
+}
+
+#hourlyChart, #dailyChart {
+    margin-top: 100px;
+}
+
+
+/* About Page */
+.about-text {
+    font-size: 25px;
+    color: grey;
+    text-align: center;
+    line-height: 40px;
+}
+
+.about-text a {
+    color: rgb(0, 0, 85);
+    text-decoration: underline;
+}
