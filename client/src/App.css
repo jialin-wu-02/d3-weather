@@ -21,6 +21,7 @@ body {
 }
 
 .search-form {
+    margin-top: 60px;
     position: relative;
     width: 100%;
     display: flex;
