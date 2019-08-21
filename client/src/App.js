@@ -3,7 +3,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import magnifiertool from './img/magnifier-tool.png';
 
-import BarChart from './components/BarChart';
+import PieChart from './components/PieChart';
 
 import './App.css';
 
@@ -25,13 +25,13 @@ class App extends Component {
       body: JSON.stringify({ address: this.state.address }),
     });
     const body = await response.json();
-    console.log(body)
     this.setState({ 
       searchFinish: true,
       weatherData: body.forecast,
       location: body.location
     });
-    console.log(this.state);
+    console.log(this.state.weatherData);
+    console.log(this.state.weatherData.hourly.data);
   };
   
   render() {
@@ -44,7 +44,7 @@ class App extends Component {
               <input img className="search-button" onClick={this.handleSubmit} src={magnifiertool} type="image" alt="submit" 
               style={{width: "36px"}}/>
           </form> : 
-          <BarChart /> }
+          <PieChart hourly={this.state.weatherData.hourly.data} /> }
           <Footer />
         </div>
       );
