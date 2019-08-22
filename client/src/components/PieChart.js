@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
 
+import './PieChart.css'
+
 class PieChart extends Component {
 
 
@@ -42,8 +44,8 @@ class PieChart extends Component {
     var average2 = sum2 / 12;
     var average = sum / 24;
 
-    var dataHeightArray1 = []
-    var dataHeightArray2 = []
+    var temHour1 = []
+    var temHour2 = []
 
     var weatherColorMAP = {
       "clear-day": "#f5d442",
@@ -55,23 +57,29 @@ class PieChart extends Component {
     }
     var weatherColor1 = [];
     var weatherColor2 = [];
+
+    // scaling function
+    const scaleTemperature = (tem) => {
+      return (tem - average) * 8 + 190;
+    }
+
     // adding height and color together
     for (let i = 0; i < 12; i++) {
-      dataHeightArray1[(i + hour) % 12] = (this.props.hourly[i].temperature - average) * 8 + 190;
+      temHour1[(i + hour) % 12] = (this.props.hourly[i].temperature);
       weatherColor1[(i + hour) % 12] = weatherColorMAP[(this.props.hourly[i].icon)]
     }
     for (let i = 12; i < 24; i++) {
-      dataHeightArray2[(i + hour) % 12] = (this.props.hourly[i].temperature - average) * 8 + 190;
+      temHour2[(i + hour) % 12] = (this.props.hourly[i].temperature);
       weatherColor2[(i + hour) % 12] = weatherColorMAP[(this.props.hourly[i].icon)]
     }
 
     var dataHeight1 = d3.scaleOrdinal()
     .domain(data)
-    .range(dataHeightArray1)
+    .range(temHour1)
   
     var dataHeight2 = d3.scaleOrdinal()
     .domain(data)
-    .range(dataHeightArray2)
+    .range(temHour2)
 
     // set the color scale
     var color1 = d3.scaleOrdinal()
@@ -89,34 +97,82 @@ class PieChart extends Component {
     .value(function(d) {return d.value; })
     var data_ready = pie(d3.entries(data))
 
+    const handleMouseOver = (d, i) => {
+      d3.select(this).attr({
+        fill: "black"
+      })
+      console.log(d, i);
+      console.log(111)
+    }
+
+    const handleMouseOut = (d, i) => {
+      console.log(d, i);
+      console.log(222)
+    }
+
+    var div1 = d3.select("#PieChart").append("div")	
+    .attr("class", "tooltip")				
+    .attr("id", "am")
+    .style("opacity", 0);
+
+    var div2 = d3.select("#PieChart").append("div")	
+    .attr("class", "tooltip")				
+    .attr("id", "pm")
+    .style("opacity", 0);
+
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
     svg
     .selectAll('whatever')
     .data(data_ready)
     .enter()
     .append('path')
-    .attr('d', d3.arc()
-        .innerRadius(130)
-        .outerRadius(function(d){ return (dataHeight1(d.data.key))})
-    )
-    .attr('fill', function(d){ return(color1(d.data.key)) })
-    .attr("stroke", "black")
-    .style("stroke-width", "2px")
-    .style("opacity", 0.7)
+      .attr('class', "arc")
+      .attr('d', d3.arc()
+          .innerRadius(130)
+          .outerRadius(function(d){ return scaleTemperature(dataHeight1(d.data.key))})
+      )
+      .attr('fill', function(d){ return(color1(d.data.key)) })
+      .attr("stroke", "black")
+      .style("stroke-width", "2px")
+      .style("opacity", 0.7)
+    .on("mouseover", function(d) {
+      div1.transition()
+          .duration(200)
+          .style("opacity", .9)
+      div1.html("AM" +  "<br/>" + dataHeight1(d.data.key))
+    })
+    .on("mouseout", function(d) {
+      div1.transition()
+          .transition()
+            .duration(200)
+            .style("opacity", 0)
+    })
 
     svg1
     .selectAll('whatever')
     .data(data_ready)
     .enter()
-    .append('path')
-    .attr('d', d3.arc()
+    .append('path')     
+      .attr('class', "arc")
+      .attr('d', d3.arc()
         .innerRadius(130)
-        .outerRadius(function(d){ return (dataHeight2(d.data.key))})
-    )
-    .attr('fill', function(d){ return(color2(d.data.key)) })
-    .attr("stroke", "black")
-    .style("stroke-width", "2px")
-    .style("opacity", 0.7)
+        .outerRadius(function(d){ return scaleTemperature(dataHeight2(d.data.key))}))
+      .attr('fill', function(d){ return(color2(d.data.key)) })
+      .attr("stroke", "black")
+      .style("stroke-width", "2px")
+      .style("opacity", 0.7)
+      .on("mouseover", function(d) {
+        div2.transition()
+            .duration(200)
+            .style("opacity", .9)
+        div2.html("PM" +  "<br/>" + dataHeight2(d.data.key))
+      })
+      .on("mouseout", function(d) {
+        div2.transition()
+            .transition()
+              .duration(500)
+              .style("opacity", 0)
+      })
   }
   
   render() {
