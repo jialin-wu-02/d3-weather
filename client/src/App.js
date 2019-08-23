@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import magnifiertool from './img/magnifier-tool.png';
 
 import PieChart from './components/PieChart';
+import BoxChart from './components/BoxChart';
 
 import './App.css';
 
@@ -30,8 +31,6 @@ class App extends Component {
       weatherData: body.forecast,
       location: body.location
     });
-    console.log(this.state.weatherData);
-    console.log(this.state.weatherData.hourly.data);
   };
   
   render() {
@@ -44,7 +43,10 @@ class App extends Component {
               <input img className="search-button" onClick={this.handleSubmit} src={magnifiertool} type="image" alt="submit" 
               style={{width: "36px"}}/>
           </form> : 
-          <PieChart hourly={this.state.weatherData.hourly.data} /> }
+          <div>
+          <PieChart hourly={this.state.weatherData.hourly.data} /> 
+          <BoxChart daily={this.state.weatherData.daily.data} /> 
+          </div>}
           <Footer />
         </div>
       );

@@ -97,28 +97,17 @@ class PieChart extends Component {
     .value(function(d) {return d.value; })
     var data_ready = pie(d3.entries(data))
 
-    const handleMouseOver = (d, i) => {
-      d3.select(this).attr({
-        fill: "black"
-      })
-      console.log(d, i);
-      console.log(111)
-    }
-
-    const handleMouseOut = (d, i) => {
-      console.log(d, i);
-      console.log(222)
-    }
-
     var div1 = d3.select("#PieChart").append("div")	
     .attr("class", "tooltip")				
     .attr("id", "am")
-    .style("opacity", 0);
+    .style("opacity", 1)
+    .html("AM" +  "<br/>" + Math.round(average1) + "&#8451;");
 
     var div2 = d3.select("#PieChart").append("div")	
     .attr("class", "tooltip")				
     .attr("id", "pm")
-    .style("opacity", 0);
+    .style("opacity", 1)
+    .html("PM" +  "<br/>" + Math.round(average2) + "&#8451;");
 
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
     svg
@@ -139,13 +128,12 @@ class PieChart extends Component {
       div1.transition()
           .duration(200)
           .style("opacity", .9)
-      div1.html("AM" +  "<br/>" + dataHeight1(d.data.key))
+      div1.html(d.index + " AM" +  "<br/>" + dataHeight1(d.data.key) + "&#8451;")
     })
     .on("mouseout", function(d) {
       div1.transition()
-          .transition()
             .duration(200)
-            .style("opacity", 0)
+      div1.html("AM" +  "<br/>" + Math.round(average1) + "&#8451;")
     })
 
     svg1
@@ -165,13 +153,12 @@ class PieChart extends Component {
         div2.transition()
             .duration(200)
             .style("opacity", .9)
-        div2.html("PM" +  "<br/>" + dataHeight2(d.data.key))
+        div2.html(d.index + " PM" +  "<br/>" + dataHeight2(d.data.key) + "&#8451;")
       })
       .on("mouseout", function(d) {
         div2.transition()
-            .transition()
-              .duration(500)
-              .style("opacity", 0)
+            .duration(200)
+        div2.html("PM" +  "<br/>" + Math.round(average2) + "&#8451;")
       })
   }
   
